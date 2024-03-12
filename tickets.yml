@@ -1,0 +1,9 @@
+tickets:
+  - ticket: AAPL
+    stocks: 100
+  - ticket: MSFT
+    stocks: 200
+  - ticket: GOOG
+    stocks: 300
+  - ticket: TSLA
+    stocks: 400
