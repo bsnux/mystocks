@@ -56,12 +56,14 @@ func main() {
 	var ticket Tickets
 	yamlFile, err := os.ReadFile("tickets.yml")
 	if err != nil {
-		panic(err)
+		fmt.Printf("Error: %s. Make sure you created the required tickets.yml file\n", err.Error())
+		os.Exit(1)
 	}
 
 	err = yaml.Unmarshal(yamlFile, &ticket)
 	if err != nil {
-		panic(err)
+		fmt.Printf("Error: %s\n", err.Error())
+		os.Exit(1)
 	}
 
 	headerFmt := color.New(color.FgGreen).SprintfFunc()
