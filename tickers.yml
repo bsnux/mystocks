@@ -1,0 +1,9 @@
+tickers:
+  - ticker: AAPL
+    stocks: 100
+  - ticker: MSFT
+    stocks: 200
+  - ticker: GOOG
+    stocks: 300
+  - ticker: TSLA
+    stocks: 400

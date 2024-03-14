@@ -13,21 +13,21 @@ import (
 	"sync"
 )
 
-type Ticket struct {
-	Ticket string `yaml:"ticket"`
+type Ticker struct {
+	Ticker string `yaml:"ticker"`
 	Stocks int    `yaml:"stocks"`
 }
 
-type Tickets struct {
-	Tickets []Ticket `yaml:"tickets"`
+type Tickers struct {
+	Tickers []Ticker `yaml:"tickers"`
 }
 
 var wg sync.WaitGroup
 
-func getTicket(t Ticket, tbl table.Table) error {
+func getTicker(t Ticker, tbl table.Table) error {
 	defer wg.Done()
 
-	url := fmt.Sprintf("https://finance.yahoo.com/quote/%s?.tsrc=fin-srch", t.Ticket)
+	url := fmt.Sprintf("https://finance.yahoo.com/quote/%s?.tsrc=fin-srch", t.Ticker)
 	// Header required here to get real time price
 	soup.Header("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.135 Safari/537.36 Edge/12.24")
 
@@ -36,7 +36,7 @@ func getTicket(t Ticket, tbl table.Table) error {
 		return err
 	}
 	doc := soup.HTMLParse(res)
-	div := doc.Find("fin-streamer", "data-symbol", t.Ticket)
+	div := doc.Find("fin-streamer", "data-symbol", t.Ticker)
 	val := div.Attrs()["value"]
 
 	parseVal, err := strconv.ParseFloat(val, 64)
@@ -47,20 +47,20 @@ func getTicket(t Ticket, tbl table.Table) error {
 	p := message.NewPrinter(language.English)
 	total := p.Sprintf("$%.2f", parseVal*float64(t.Stocks))
 	stockPrice := p.Sprintf("$%.2f", parseVal)
-	tbl.AddRow(t.Ticket, stockPrice, t.Stocks, total)
+	tbl.AddRow(t.Ticker, stockPrice, t.Stocks, total)
 
 	return nil
 }
 
 func main() {
-	var ticket Tickets
-	yamlFile, err := os.ReadFile("tickets.yml")
+	var ticker Tickers
+	yamlFile, err := os.ReadFile("tickers.yml")
 	if err != nil {
-		fmt.Printf("Error: %s. Make sure you created the required tickets.yml file\n", err.Error())
+		fmt.Printf("Error: %s. Make sure you created the required tickers.yml file\n", err.Error())
 		os.Exit(1)
 	}
 
-	err = yaml.Unmarshal(yamlFile, &ticket)
+	err = yaml.Unmarshal(yamlFile, &ticker)
 	if err != nil {
 		fmt.Printf("Error: %s\n", err.Error())
 		os.Exit(1)
@@ -69,12 +69,12 @@ func main() {
 	headerFmt := color.New(color.FgGreen).SprintfFunc()
 	columnFmt := color.New(color.FgYellow).SprintfFunc()
 
-	tbl := table.New("Ticket", "Value", "Stocks", "Total")
+	tbl := table.New("Ticker", "Value", "Stocks", "Total")
 	tbl.WithHeaderFormatter(headerFmt).WithFirstColumnFormatter(columnFmt)
 
-	wg.Add(len(ticket.Tickets))
-	for _, i := range ticket.Tickets {
-		go getTicket(i, tbl)
+	wg.Add(len(ticker.Tickers))
+	for _, i := range ticker.Tickers {
+		go getTicker(i, tbl)
 	}
 
 	wg.Wait()
