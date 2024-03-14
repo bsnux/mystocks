@@ -1,23 +1,23 @@
 # My Stocks
 
-Simple CLI tool for displaying the real time value of your current stocks based on the tickets
+Simple CLI tool for displaying the real time value of your current stocks based on the tickers
 and number of stocks.
 
 # Configuration
 
-Open the `tickets.yml` file and add your stocks tickets and number of stocks.
+Open the `tickers.yml` file and add your stocks tickers and number of stocks.
 
 YAML configuration file example:
 
 ```yaml
-tickets:
-  - ticket: AAPL
+tickers:
+  - ticker: AAPL
     stocks: 1
-  - ticket: MSFT
+  - ticker: MSFT
     stocks: 2
-  - ticket: GOOG
+  - ticker: GOOG
     stocks: 3
-  - ticket: TSLA
+  - ticker: TSLA
     stocks: 4
 ```
 
