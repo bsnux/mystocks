@@ -1,3 +1,13 @@
+#### 2024-03-14
+
+##### New Features
+
+*  typo replacing ticket by ticker (ea217080)
+
+##### Other Changes
+
+*  replacing typo in docs (36fffe7c)
+
 #### 2024-03-13
 
 ##### New Features
